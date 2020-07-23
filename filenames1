@@ -1,0 +1,35 @@
+Option Explicit
+
+Sub listAllfiles()
+Dim objFSO As Scripting.FileSystemObject
+Dim objFolder As Scripting.Folder
+
+Set objFSO = CreateObject("Scrpting.FileSystemObject")
+Set objFolder = objFSO.GetFolder("C:\temp")
+
+Call GetFileSetails(objFolder)
+
+End Sub
+
+
+
+Function GetFileDetails(objFolder As Scripting.Folder)
+
+Dim objFIle As Scripting.File
+Dim nextRow As Long
+Dim objSubFolder As Scripting.Folder
+
+nextRow = Cells(Rows.Count, 1).End(xlUp).Row + 1
+
+For Each objFIle In objFolder.Files
+Cells(nextRow, 1) = objFIle.Name
+Cells(nextRow, 1) = objFIle.Path
+nextRow = nextRow + 1
+Next
+
+For Each objSubFolder In objFolder.SubFolders
+Call GetFileDetails(objSubFolder)
+Next
+
+
+End Function
